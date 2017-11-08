@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>VideoLogger</title>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.js"></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+        <link rel="stylesheet" href="main.css">
+        <script src="main.js"></script>
+    </head>
+    <body>
+        <div style="width:100%;text-align:center">
+            <div class="well" style="height:140px">
+                <label>YouTube URL:</label>
+                <input id="youtube_url" style="width:100%;float:left">
+                <input id="youtube_btn" style="margin-top:4px;float:right" class="btn btn-primary" type="button" value="Load Player" >
+            </div>
+            <div>
+                <div id="player"></div>
+            </div>
+            <script>
+                // https://developers.google.com/youtube/iframe_api_reference
+                
+                var tag = document.createElement('script');
+                tag.src = "https://www.youtube.com/iframe_api";
+                var firstScriptTag = document.getElementsByTagName('script')[0];
+                firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+                var player;
+                var playerState;
+                function onYouTubeIframeAPIReady() {
+                    loadPlayer('qNSy091Otus');
+                }
+
+                function onPlayerReady(event) {
+                    //event.target.playVideo();
+                }
+
+                function onPlayerStateChange(event) {
+                    playerState = event.data;
+                    if (event.data == YT.PlayerState.PLAYING) {
+                        
+                    }
+                }
+                
+                function stopVideo() {
+                    player.stopVideo();
+                }
+                
+                function loadPlayer(videoId) {
+                    if (player) {
+                        player.loadVideoById(videoId, 0, 'medium');
+                    } else {
+                        player = new YT.Player('player', {
+                            height: '400',
+                            width: '640',
+                            videoId: videoId,
+                            events: {
+                                'onReady': onPlayerReady,
+                                'onStateChange': onPlayerStateChange
+                            }
+                        });
+                    }
+                }
+                
+                $('#youtube_btn').on('click', function (e) {
+                    // format example - https://www.youtube.com/watch?v=tIWUprLNOkQ
+                    var key = $('#youtube_url').val();
+                    if (key.indexOf('youtube.com/watch?v=') > 0) {
+                        key = key.split('youtube.com/watch?v=')[1];
+                        if (key.indexOf('&') > 0) {
+                            key = key.split('&')[0];
+                        }
+                    }
+                    loadPlayer(key);
+                });
+            </script>
+            <table>
+                <tr>
+                </tr>
+            </table>
+        </div>
+    </body>
+</html>
