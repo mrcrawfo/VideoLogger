@@ -4,6 +4,7 @@
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <title>VideoLogger</title>
+        <script src="ejs_production.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.js"></script>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
@@ -20,7 +21,17 @@
             <div>
                 <div id="player"></div>
             </div>
+            <ul id="markerlist"></ul>
             <script>
+                var markers = [];
+                var id;
+                var chapter = 1;
+                
+                var CATEGORY_1 = "cutscene";
+                var CATEGORY_2 = "menu";
+                var CATEGORY_3 = "walk";
+                var CATEGORY_4 = "battle";
+                
                 // https://developers.google.com/youtube/iframe_api_reference
                 
                 var tag = document.createElement('script');
@@ -45,11 +56,16 @@
                     }
                 }
                 
-                function stopVideo() {
-                    player.stopVideo();
+                function playVideo() {
+                    player.playVideo();
+                }
+                
+                function pauseVideo() {
+                    player.pauseVideo();
                 }
                 
                 function loadPlayer(videoId) {
+                    id = videoId;
                     if (player) {
                         player.loadVideoById(videoId, 0, 'medium');
                     } else {
@@ -65,22 +81,130 @@
                     }
                 }
                 
+                // https://stackoverflow.com/questions/3452546/how-do-i-get-the-youtube-video-id-from-a-url
+                function youtube_parser(url){
+                    var regExp = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#\&\?]*).*/;
+                    var match = url.match(regExp);
+                    return (match&&match[7].length==11)? match[7] : false;
+                }
+                
                 $('#youtube_btn').on('click', function (e) {
-                    // format example - https://www.youtube.com/watch?v=tIWUprLNOkQ
-                    var key = $('#youtube_url').val();
-                    if (key.indexOf('youtube.com/watch?v=') > 0) {
-                        key = key.split('youtube.com/watch?v=')[1];
-                        if (key.indexOf('&') > 0) {
-                            key = key.split('&')[0];
+                    var videoId = youtube_parser($('#youtube_url').val());
+                    
+                    if (videoId && videoId != '' && videoId.length == 11) {
+                        loadPlayer(videoId);
+                    }
+                });
+                
+                $(document).keypress(function(e) {
+                    if (playerState == 1) {
+                        if(e.which == 49) {
+                            addMarker(1, Math.floor(player.getCurrentTime()));
+                        }
+                        if(e.which == 50) {
+                            addMarker(2, Math.floor(player.getCurrentTime()));
+                        }
+                        if(e.which == 51) {
+                            addMarker(3, Math.floor(player.getCurrentTime()));
+                        }
+                        if(e.which == 52) {
+                            addMarker(4, Math.floor(player.getCurrentTime()));
+                        }
+                        if(e.which == 43 || e.which == 93) {
+                            chapter++;
+                        }
+                        if(e.which == 45 || e.which == 91) {
+                            if(chapter > 1) {
+                                chapter--;
+                            }
+                        }
+                        if(e.which == 32) {
+                            pauseVideo();
+                        }
+                    } else {
+                        if(e.which == 32) {
+                            playVideo();
                         }
                     }
-                    loadPlayer(key);
                 });
+                
+                function getTypeName(value) {
+                    switch(value) {
+                        case 1:
+                            output = CATEGORY_1;
+                            break;
+                        case 2:
+                            output = CATEGORY_2;
+                            break;
+                        case 3:
+                            output = CATEGORY_3;
+                            break;
+                        case 4:
+                            output = CATEGORY_4;
+                            break;
+                    }
+                }
+                
+                function renderMarkers() {
+                    var markerlist = $('#markerlist');
+                    markerlist.empty();
+                    for(var i = 0; i < markers.length; i++) {
+                        var marker = new EJS({url:'templates/marker.ejs'}).render(markers[i]);
+                        markerlist.append(marker);
+                    }
+                }
+                
+                function updateMarker(index, marker) {
+                    
+                }
+                
+                function addMarker(markerType, markerTime) {
+                    var timecode = getTimecode(markerTime);
+                    var marker = {type: markerType, time: markerTime, timecode: timecode, chapter: chapter};
+                    
+                    var replaceIndex = -1;
+                    for(var i = 0; i < markers.length; i++) {
+                        if(markers[i].time == markerTime) {
+                            replaceIndex = i;
+                        }
+                    }
+                    if(replaceIndex < 0) {
+                        markers.push(marker);
+                        markers.sort(timestampAscending);
+                        renderMarkers();
+                    } else {
+                        markers[replaceIndex] = marker;
+                        updateMarker(replaceIndex, marker);
+                    }
+                }
+                
+                function getTimecode(seconds) {
+                    var h = Math.floor(seconds / 3600);
+                    var m = Math.floor(seconds / 60);
+                    var s = seconds % 60;
+                    return zerofill(h, 2) + ':' + zerofill(m, 2) + ':' + zerofill(s, 2);
+                }
+                
+                function zerofill(value, digits) {
+                    var output = '';
+                    for(var i = 0; i < digits; i++) {
+                        output += '0';
+                    }
+                    value = value.toString();
+                    output = output.substr(value.length) + value;
+                    return output;
+                }
+                
+                function timestampAscending(a, b) {
+                    if (a.time < b.time) {
+                        return -1;
+                    }
+                    if (a.time > b.time) {
+                        return 1;
+                    }
+                    return 0;
+                }
             </script>
-            <table>
-                <tr>
-                </tr>
-            </table>
         </div>
     </body>
 </html>

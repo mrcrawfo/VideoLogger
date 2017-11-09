@@ -1,12 +1,14 @@
-var challenge1 = 1;
-var challenge2 = 2;
-var challenge3 = 3;
-var challenge4 = 4;
-var challenge5 = 5;
-var challenge6 = 6;
-var challenge7 = 7;
-var challenge8 = 8;
+//var videoLoggerApp = angular.module('videoLoggerApp');
+//
+//videoLoggerApp.controller('urlController', ['$scope', function ($scope) {
+//    var self = this;
+//    
+//    self.onclickReset = function () {
+//        var videoId = youtube_parser($('#youtube_url').val());
+//
+//        if (videoId && videoId != '' && videoId.length == 11) {
+//            loadPlayer(videoId);
+//        }
+//    };
+//}]);
 
-function solve(input) {
-    // do something
-}
