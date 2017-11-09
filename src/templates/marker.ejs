@@ -1,4 +1,22 @@
-<li>
-    <h3>Chapter <%= chapter %> - <%= timecode %></h3>
-    <p><%= type %></p>
+<li class="<%= getTypeName(type).toLowerCase() %>">
+    <div class="iconholder">
+        <% switch(type) {
+            case 1: %>
+                <span class="glyphicon glyphicon-film" aria-hidden="true"></span> <%
+                break;
+            case 2: %>
+                <span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span> <%
+                break;
+            case 3: %>
+                <span class="glyphicon glyphicon-globe" aria-hidden="true"></span> <%
+                break;
+            case 4: %>
+                <span class="glyphicon glyphicon-flag" aria-hidden="true"></span> <%
+                break;
+        } %>
+    </div>
+    <div class="textholder">
+        <strong><%= timecode %> - <%= getTypeName(type) %></strong>
+        <p>Chapter <%= chapter %></p>
+    </div>
 </li>

@@ -1,28 +1,71 @@
 html {
     background: #e6e9e9;
     background-image: linear-gradient(270deg, rgb(230, 233, 233) 0%, rgb(216, 221, 221) 100%);
-    -webkit-font-smoothing: antialiased;
+    height: 100vh;
 }
 
 body {
-    background: #fff;
-    box-shadow: 0 0 2px rgba(0, 0, 0, 0.06);
-    color: #545454;
-    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-    font-size: 16px;
-    line-height: 1.5;
-    margin: 0 auto;
-    max-width: 800px;
-    padding: 2em 2em 4em;
+    height: 100vh;
 }
 
-td {
-    width: 200px;
-    margin: 8px;
-    padding: 8px;
-    border: solid 2px black;
+ul {
+    height: 96vh;
+    overflow-y: scroll;
+    list-style: none;
 }
 
-pre {
-    font-size: 8px;
+div.row {
+    margin-top: 20px;
+}
+
+li {
+    margin: 2px;
+    padding: 4px;
+    height: 50px;
+}
+
+li.cutscene {
+/*    background-color:#6C94E8;*/
+/*    background-color: #B28C92;*/
+/*    background-color: dodgerblue;*/
+    background-color: #2C68FF;
+    color: darkslateblue;
+}
+
+li.menu {
+/*    background-color:#84CCFF;*/
+/*    background-color: #FFFCB5;*/
+/*    background-color: sunglow;*/
+    background-color: #FFC22C;
+    color: sienna;
+}
+
+li.walk {
+/*    background-color: #6CD5E8;*/
+/*    background-color: #FFCFD6;*/
+/*    background-color: coralred;*/
+    background-color: #FF3748;
+    color: firebrick;    
+}
+
+li.battle {
+/*    background-color: #77FFEF;*/
+/*    background-color: #91BACC;*/
+/*    background-color: malachite;*/
+    background-color: #0EB22F;
+    color: darkolivegreen;
+}
+
+li div.iconholder {
+    float: left;
+    width: 70px;
+    height: 50px;
+    font-size: 1.75em;
+    line-height: 2em;
+    text-align: center;
+    vertical-align: middle;
+}
+
+li div.textholder {
+    float: left;
 }

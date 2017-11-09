@@ -12,25 +12,34 @@
         <script src="main.js"></script>
     </head>
     <body>
-        <div style="width:100%;text-align:center">
-            <div class="well" style="height:140px">
-                <label>YouTube URL:</label>
-                <input id="youtube_url" style="width:100%;float:left">
-                <input id="youtube_btn" style="margin-top:4px;float:right" class="btn btn-primary" type="button" value="Load Player" >
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-1"></div>
+                <div class="col-md-6">
+                    <div class="well" style="height:140px">
+                        <label>YouTube URL:</label>
+                        <input id="youtube_url" style="width:100%;float:left">
+                        <input id="youtube_btn" style="margin-top:4px;float:right" class="btn btn-primary" type="button" value="Load Player" >
+                    </div>
+                    <div style="width:100%;text-align:center">
+                        <div id="player"></div>
+                    </div>
+                </div>
+                <div class="col-md-1"></div>
+                <div class="col-md-4">
+                    <ul id="markerlist"></ul>
+                </div>
             </div>
-            <div>
-                <div id="player"></div>
-            </div>
-            <ul id="markerlist"></ul>
             <script>
                 var markers = [];
                 var id;
                 var chapter = 1;
+                var duration;
                 
-                var CATEGORY_1 = "cutscene";
-                var CATEGORY_2 = "menu";
-                var CATEGORY_3 = "walk";
-                var CATEGORY_4 = "battle";
+                var CATEGORY_1 = "Cutscene";
+                var CATEGORY_2 = "Menu";
+                var CATEGORY_3 = "Walk";
+                var CATEGORY_4 = "Battle";
                 
                 // https://developers.google.com/youtube/iframe_api_reference
                 
@@ -47,6 +56,11 @@
 
                 function onPlayerReady(event) {
                     //event.target.playVideo();
+                    var url = player.getVideoUrl();
+                    if($('#youtube_url').val() != url) {
+                        $('#youtube_url').val(url);
+                    }
+                    duration = player.getDuration();
                 }
 
                 function onPlayerStateChange(event) {
@@ -143,6 +157,7 @@
                             output = CATEGORY_4;
                             break;
                     }
+                    return output;
                 }
                 
                 function renderMarkers() {
@@ -152,6 +167,7 @@
                         var marker = new EJS({url:'templates/marker.ejs'}).render(markers[i]);
                         markerlist.append(marker);
                     }
+                    $('#markerlist').animate({scrollTop: $('#markerlist').prop("scrollHeight")}, 600);
                 }
                 
                 function updateMarker(index, marker) {
