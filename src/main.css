@@ -69,3 +69,11 @@ li div.iconholder {
 li div.textholder {
     float: left;
 }
+
+li button.remove {
+    float: right;
+    width: 25px;
+    height: 25px;
+    padding: 0;
+    margin: 8px;
+}

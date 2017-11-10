@@ -164,6 +164,7 @@
                     var markerlist = $('#markerlist');
                     markerlist.empty();
                     for(var i = 0; i < markers.length; i++) {
+                        markers[i].index = i;
                         var marker = new EJS({url:'templates/marker.ejs'}).render(markers[i]);
                         markerlist.append(marker);
                     }
@@ -171,7 +172,14 @@
                 }
                 
                 function updateMarker(index, marker) {
-                    
+                    //$('#markerlist li').eq(index).remove();
+                    markers[index] = marker;
+                    renderMarkers();
+                }
+                
+                function removeMarker(index) {
+                    markers.splice(index, 1);
+                    renderMarkers();
                 }
                 
                 function addMarker(markerType, markerTime) {

@@ -19,4 +19,5 @@
         <strong><%= timecode %> - <%= getTypeName(type) %></strong>
         <p>Chapter <%= chapter %></p>
     </div>
+    <button type="button" class="btn btn-default remove" onclick="removeMarker(<%= index %>)"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
 </li>
