@@ -12,10 +12,18 @@
         <script src="main.js"></script>
     </head>
     <body>
-        <div class="reset">
-            <button type="button" id="reset_btn" class="btn btn-warning" type="button">
+        <div class="footer">
+            <button type="button" id="playlist_btn" class="btn btn-info" type="button">
+                <span class="glyphicon glyphicon-list" aria-hidden="true"></span>
+            </button>
+            <button type="button" id="reset_btn" class="btn btn-danger" type="button">
                 <span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span>
             </button>
+            <a id="download_btn_link">
+                <button type="button" id="download_btn" class="btn btn-primary" type="button">
+                    <span class="glyphicon glyphicon-download-alt" aria-hidden="true"></span>
+                </button>
+            </a>
         </div>
         <div class="container-fluid">
             <div class="row">
@@ -86,6 +94,7 @@
                 function loadPlayer(videoId) {
                     id = videoId;
                     markers = storageRead();
+                    exportCSV();
                     renderMarkers();
                     
                     if (player) {
@@ -118,22 +127,26 @@
                     }
                 });
                 
+                $('#playlist_btn').on('click', function (e) {
+                    // show playlist modal
+                });
+                
                 $('#reset_btn').on('click', function (e) {
                     storageClear();
-                })
+                });
                 
                 $(document).keypress(function(e) {
                     if (playerState == 1) {
-                        if(e.which == 49) {
+                        if(e.which == 49 || e.which == 97) {
                             addMarker(1, Math.floor(player.getCurrentTime()));
                         }
-                        if(e.which == 50) {
+                        if(e.which == 50 || e.which == 115) {
                             addMarker(2, Math.floor(player.getCurrentTime()));
                         }
-                        if(e.which == 51) {
+                        if(e.which == 51 || e.which == 100) {
                             addMarker(3, Math.floor(player.getCurrentTime()));
                         }
-                        if(e.which == 52) {
+                        if(e.which == 52 || e.which == 102) {
                             addMarker(4, Math.floor(player.getCurrentTime()));
                         }
                         if(e.which == 43 || e.which == 93) {
@@ -254,6 +267,7 @@
                         {
                             var storageString = JSON.stringify(markers);
                             window.localStorage.setItem(id, storageString);
+                            exportCSV();
                             success = true;
                         }
                     } catch(e) {}
@@ -283,6 +297,24 @@
                         markers = [];
                         renderMarkers();
                     } catch(e) {}
+                }
+                
+                function exportCSV() {
+                    var markersArray = [['index', 'type', 'time', 'timecode', 'chapter']];
+                    for(var i = 0; i < markers.length; i++) {
+                        markersArray.push([markers[i].index, markers[i].type, markers[i].time, markers[i].timecode, markers[i].chapter]);
+                    }
+                    var csv = "data:text/csv;charset=utf-8,";
+                    markersArray.forEach(function(rowArray){
+                        let row = rowArray.join(",");
+                        csv += row + "\r\n"; // add carriage return
+                    });
+
+                    var encodedUri = encodeURI(csv);
+//                    window.open(encodedUri);
+                    var link = document.getElementById('download_btn_link');
+                    link.setAttribute("href", encodedUri);
+                    link.setAttribute("download", id + ".csv");
                 }
             </script>
         </div>
