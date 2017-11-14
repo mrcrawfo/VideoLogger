@@ -12,6 +12,11 @@
         <script src="main.js"></script>
     </head>
     <body>
+        <div class="reset">
+            <button type="button" id="reset_btn" class="btn btn-warning" type="button">
+                <span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span>
+            </button>
+        </div>
         <div class="container-fluid">
             <div class="row">
                 <div class="col-md-1"></div>
@@ -19,7 +24,7 @@
                     <div class="well" style="height:140px">
                         <label>YouTube URL:</label>
                         <input id="youtube_url" style="width:100%;float:left">
-                        <input id="youtube_btn" style="margin-top:4px;float:right" class="btn btn-primary" type="button" value="Load Player" >
+                        <input id="youtube_btn" style="margin-top:4px;float:right" class="btn btn-primary" type="button" value="Load Player">
                     </div>
                     <div style="width:100%;text-align:center">
                         <div id="player"></div>
@@ -80,6 +85,9 @@
                 
                 function loadPlayer(videoId) {
                     id = videoId;
+                    markers = storageRead();
+                    renderMarkers();
+                    
                     if (player) {
                         player.loadVideoById(videoId, 0, 'medium');
                     } else {
@@ -109,6 +117,10 @@
                         loadPlayer(videoId);
                     }
                 });
+                
+                $('#reset_btn').on('click', function (e) {
+                    storageClear();
+                })
                 
                 $(document).keypress(function(e) {
                     if (playerState == 1) {
@@ -174,11 +186,13 @@
                 function updateMarker(index, marker) {
                     //$('#markerlist li').eq(index).remove();
                     markers[index] = marker;
+                    storageWrite();
                     renderMarkers();
                 }
                 
                 function removeMarker(index) {
                     markers.splice(index, 1);
+                    storageWrite();
                     renderMarkers();
                 }
                 
@@ -195,6 +209,7 @@
                     if(replaceIndex < 0) {
                         markers.push(marker);
                         markers.sort(timestampAscending);
+                        storageWrite();
                         renderMarkers();
                     } else {
                         markers[replaceIndex] = marker;
@@ -227,6 +242,47 @@
                         return 1;
                     }
                     return 0;
+                }
+                
+                function storageWrite()
+                {
+                    var success = false;
+                    
+                    try
+                    {
+                        if(markers != null && markers.length > 0)
+                        {
+                            var storageString = JSON.stringify(markers);
+                            window.localStorage.setItem(id, storageString);
+                            success = true;
+                        }
+                    } catch(e) {}
+                    
+                    return success;
+                }
+                
+                function storageRead() {
+                    var output = [];
+                    
+                    try
+                    {
+                        var data = JSON.parse(window.localStorage.getItem(id));
+                        if (data && data.length > 0) {
+                            output = data;
+                        }
+                    } catch(e) {}
+                    
+                    return output;
+                }
+                
+                function storageClear() {
+                    try
+                    {
+                        var storageString = JSON.stringify([]);
+                        window.localStorage.setItem(id, storageString);
+                        markers = [];
+                        renderMarkers();
+                    } catch(e) {}
                 }
             </script>
         </div>
