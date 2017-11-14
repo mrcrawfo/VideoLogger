@@ -13,14 +13,14 @@
     </head>
     <body>
         <div class="footer">
-            <button type="button" id="playlist_btn" class="btn btn-info" type="button" data-toggle="modal" data-target="#playlist">
+            <button type="button" id="playlist_btn" class="btn btn-info" type="button" data-toggle="tooltip" data-placement="top" title="Playlist">
                 <span class="glyphicon glyphicon-list" aria-hidden="true"></span>
             </button>
-            <button type="button" id="reset_btn" class="btn btn-danger" type="button">
+            <button type="button" id="reset_btn" class="btn btn-danger" type="button" data-toggle="tooltip" data-placement="top" title="Clear Markers">
                 <span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span>
             </button>
             <a id="download_btn_link">
-                <button type="button" id="download_btn" class="btn btn-primary" type="button">
+                <button type="button" id="download_btn" class="btn btn-primary" type="button" data-toggle="tooltip" data-placement="top" title="Download CSV">
                     <span class="glyphicon glyphicon-download-alt" aria-hidden="true"></span>
                 </button>
             </a>
@@ -34,19 +34,19 @@
                     </div>
                     <div class="modal-body">
                         <ul>
-                            <li data-url="https://www.youtube.com/watch?v=gm3c7gA8N_U">PS2 Longplay [005] Final Fantasy X (Part 1 of 13)</li>
-                            <li data-url="https://www.youtube.com/watch?v=7AfdIqS3iQI">PS2 Longplay [005] Final Fantasy X (Part 2 of 13)</li>
-                            <li data-url="https://www.youtube.com/watch?v=mVTgBIOGCI0">PS2 Longplay [005] Final Fantasy X (Part 3 of 13)</li>
-                            <li data-url="https://www.youtube.com/watch?v=BsWFYCxUABM">PS2 Longplay [005] Final Fantasy X (Part 4 of 13)</li>
-                            <li data-url="https://www.youtube.com/watch?v=CLgrL9j01gc">PS2 Longplay [005] Final Fantasy X (Part 5 of 13)</li>
-                            <li data-url="https://www.youtube.com/watch?v=z48ELNJbbPU">PS2 Longplay [005] Final Fantasy X (Part 6 of 13)</li>
-                            <li data-url="https://www.youtube.com/watch?v=uR9-GNn54Xo">PS2 Longplay [005] Final Fantasy X (Part 7 of 13)</li>
-                            <li data-url="https://www.youtube.com/watch?v=x2OOdPt4xpg">PS2 Longplay [005] Final Fantasy X (Part 8 of 13)</li>
-                            <li data-url="https://www.youtube.com/watch?v=dfctuq7mupU">PS2 Longplay [005] Final Fantasy X (Part 9 of 13)</li>
-                            <li data-url="https://www.youtube.com/watch?v=mIFVmu7odWs">PS2 Longplay [005] Final Fantasy X (Part 10 of 13)</li>
-                            <li data-url="https://www.youtube.com/watch?v=uSOIfc2z7Mk">PS2 Longplay [005] Final Fantasy X (Part 11 of 13)</li>
-                            <li data-url="https://www.youtube.com/watch?v=PZyCytsDx8g">PS2 Longplay [005] Final Fantasy X (Part 12 of 13)</li>
-                            <li data-url="https://www.youtube.com/watch?v=xOE9SB53Phw">PS2 Longplay [005] Final Fantasy X (Part 13 of 13)- Dark Aeons</li>
+                            <li data-url="https://www.youtube.com/watch?v=gm3c7gA8N_U" data-filename="FFX_01_">PS2 Longplay [005] Final Fantasy X (Part 1 of 13)</li>
+                            <li data-url="https://www.youtube.com/watch?v=7AfdIqS3iQI" data-filename="FFX_02_">PS2 Longplay [005] Final Fantasy X (Part 2 of 13)</li>
+                            <li data-url="https://www.youtube.com/watch?v=mVTgBIOGCI0" data-filename="FFX_03_">PS2 Longplay [005] Final Fantasy X (Part 3 of 13)</li>
+                            <li data-url="https://www.youtube.com/watch?v=BsWFYCxUABM" data-filename="FFX_04_">PS2 Longplay [005] Final Fantasy X (Part 4 of 13)</li>
+                            <li data-url="https://www.youtube.com/watch?v=CLgrL9j01gc" data-filename="FFX_05_">PS2 Longplay [005] Final Fantasy X (Part 5 of 13)</li>
+                            <li data-url="https://www.youtube.com/watch?v=z48ELNJbbPU" data-filename="FFX_06_">PS2 Longplay [005] Final Fantasy X (Part 6 of 13)</li>
+                            <li data-url="https://www.youtube.com/watch?v=uR9-GNn54Xo" data-filename="FFX_07_">PS2 Longplay [005] Final Fantasy X (Part 7 of 13)</li>
+                            <li data-url="https://www.youtube.com/watch?v=x2OOdPt4xpg" data-filename="FFX_08_">PS2 Longplay [005] Final Fantasy X (Part 8 of 13)</li>
+                            <li data-url="https://www.youtube.com/watch?v=dfctuq7mupU" data-filename="FFX_09_">PS2 Longplay [005] Final Fantasy X (Part 9 of 13)</li>
+                            <li data-url="https://www.youtube.com/watch?v=mIFVmu7odWs" data-filename="FFX_10_">PS2 Longplay [005] Final Fantasy X (Part 10 of 13)</li>
+                            <li data-url="https://www.youtube.com/watch?v=uSOIfc2z7Mk" data-filename="FFX_11_">PS2 Longplay [005] Final Fantasy X (Part 11 of 13)</li>
+                            <li data-url="https://www.youtube.com/watch?v=PZyCytsDx8g" data-filename="FFX_12_">PS2 Longplay [005] Final Fantasy X (Part 12 of 13)</li>
+                            <li data-url="https://www.youtube.com/watch?v=xOE9SB53Phw" data-filename="FFX_13_">PS2 Longplay [005] Final Fantasy X (Part 13 of 13)- Dark Aeons</li>
                         </ul>
                     </div>
                     <div class="modal-footer">
@@ -78,6 +78,7 @@
                 var id;
                 var chapter = 1;
                 var duration;
+                var prefix = '';
                 
                 var CATEGORY_1 = "Cutscene";
                 var CATEGORY_2 = "Menu";
@@ -94,7 +95,7 @@
                 var player;
                 var playerState;
                 function onYouTubeIframeAPIReady() {
-                    loadPlayer('qNSy091Otus');
+                    loadPlayer('qNSy091Otus', '');
                 }
 
                 function onPlayerReady(event) {
@@ -121,8 +122,9 @@
                     player.pauseVideo();
                 }
                 
-                function loadPlayer(videoId) {
+                function loadPlayer(videoId, filename) {
                     id = videoId;
+                    prefix = filename;
                     markers = storageRead();
                     exportCSV();
                     renderMarkers();
@@ -153,8 +155,12 @@
                     var videoId = youtube_parser($('#youtube_url').val());
                     
                     if (videoId && videoId != '' && videoId.length == 11) {
-                        loadPlayer(videoId);
+                        loadPlayer(videoId, '');
                     }
+                });
+                
+                $('#playlist_btn').on('click', function (e) {
+                    $('#playlist').modal('show');
                 });
                 
                 $('#reset_btn').on('click', function (e) {
@@ -167,10 +173,14 @@
                         var videoId = youtube_parser($(this).data('url'));
                     
                         if (videoId && videoId != '' && videoId.length == 11) {
-                            loadPlayer(videoId);
+                            loadPlayer(videoId, $(this).data('filename'));
                             $('#playlist').modal('hide');
                         }
                     });
+                });
+                
+                $(function () {
+                    $('[data-toggle="tooltip"]').tooltip();
                 });
                 
                 $(document).keypress(function(e) {
@@ -349,10 +359,9 @@
                     });
 
                     var encodedUri = encodeURI(csv);
-//                    window.open(encodedUri);
                     var link = document.getElementById('download_btn_link');
                     link.setAttribute("href", encodedUri);
-                    link.setAttribute("download", id + ".csv");
+                    link.setAttribute("download", prefix + id + ".csv");
                 }
             </script>
         </div>
