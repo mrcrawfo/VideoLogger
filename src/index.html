@@ -13,7 +13,7 @@
     </head>
     <body>
         <div class="footer">
-            <button type="button" id="playlist_btn" class="btn btn-info" type="button">
+            <button type="button" id="playlist_btn" class="btn btn-info" type="button" data-toggle="modal" data-target="#playlist">
                 <span class="glyphicon glyphicon-list" aria-hidden="true"></span>
             </button>
             <button type="button" id="reset_btn" class="btn btn-danger" type="button">
@@ -24,6 +24,36 @@
                     <span class="glyphicon glyphicon-download-alt" aria-hidden="true"></span>
                 </button>
             </a>
+        </div>
+        <div id="playlist" class="modal fade" tabindex="-1" role="dialog">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title">Playlist - Final Fantasy X (PS2)</h4>
+                    </div>
+                    <div class="modal-body">
+                        <ul>
+                            <li data-url="https://www.youtube.com/watch?v=gm3c7gA8N_U">PS2 Longplay [005] Final Fantasy X (Part 1 of 13)</li>
+                            <li data-url="https://www.youtube.com/watch?v=7AfdIqS3iQI">PS2 Longplay [005] Final Fantasy X (Part 2 of 13)</li>
+                            <li data-url="https://www.youtube.com/watch?v=mVTgBIOGCI0">PS2 Longplay [005] Final Fantasy X (Part 3 of 13)</li>
+                            <li data-url="https://www.youtube.com/watch?v=BsWFYCxUABM">PS2 Longplay [005] Final Fantasy X (Part 4 of 13)</li>
+                            <li data-url="https://www.youtube.com/watch?v=CLgrL9j01gc">PS2 Longplay [005] Final Fantasy X (Part 5 of 13)</li>
+                            <li data-url="https://www.youtube.com/watch?v=z48ELNJbbPU">PS2 Longplay [005] Final Fantasy X (Part 6 of 13)</li>
+                            <li data-url="https://www.youtube.com/watch?v=uR9-GNn54Xo">PS2 Longplay [005] Final Fantasy X (Part 7 of 13)</li>
+                            <li data-url="https://www.youtube.com/watch?v=x2OOdPt4xpg">PS2 Longplay [005] Final Fantasy X (Part 8 of 13)</li>
+                            <li data-url="https://www.youtube.com/watch?v=dfctuq7mupU">PS2 Longplay [005] Final Fantasy X (Part 9 of 13)</li>
+                            <li data-url="https://www.youtube.com/watch?v=mIFVmu7odWs">PS2 Longplay [005] Final Fantasy X (Part 10 of 13)</li>
+                            <li data-url="https://www.youtube.com/watch?v=uSOIfc2z7Mk">PS2 Longplay [005] Final Fantasy X (Part 11 of 13)</li>
+                            <li data-url="https://www.youtube.com/watch?v=PZyCytsDx8g">PS2 Longplay [005] Final Fantasy X (Part 12 of 13)</li>
+                            <li data-url="https://www.youtube.com/watch?v=xOE9SB53Phw">PS2 Longplay [005] Final Fantasy X (Part 13 of 13)- Dark Aeons</li>
+                        </ul>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    </div>
+                </div>
+            </div>
         </div>
         <div class="container-fluid">
             <div class="row">
@@ -127,12 +157,20 @@
                     }
                 });
                 
-                $('#playlist_btn').on('click', function (e) {
-                    // show playlist modal
-                });
-                
                 $('#reset_btn').on('click', function (e) {
                     storageClear();
+                });
+                
+                $('#playlist li').each(function () {
+                    var $this = $(this);
+                    $this.on('click', function () {
+                        var videoId = youtube_parser($(this).data('url'));
+                    
+                        if (videoId && videoId != '' && videoId.length == 11) {
+                            loadPlayer(videoId);
+                            $('#playlist').modal('hide');
+                        }
+                    });
                 });
                 
                 $(document).keypress(function(e) {

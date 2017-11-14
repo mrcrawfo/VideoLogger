@@ -8,7 +8,7 @@ body {
     height: 100vh;
 }
 
-ul {
+ul#markerlist {
     height: 96vh;
     overflow-y: scroll;
     list-style: none;
@@ -34,13 +34,24 @@ div.footer button span {
     font-size: 2em;
 }
 
-li {
+#playlist li {
+    border-radius: 4px;
+    background: deepskyblue;
+    vertical-align: middle;
+    line-height: 2.3em;
+    height: 32px;
+    padding-left: 8px;
+    margin: 4px;
+    list-style: none;
+}
+
+ul#markerlist li {
     margin: 2px;
     padding: 4px;
     height: 50px;
 }
 
-li.cutscene {
+ul#markerlist li.cutscene {
 /*    background-color:#6C94E8;*/
 /*    background-color: #B28C92;*/
 /*    background-color: dodgerblue;*/
@@ -48,7 +59,7 @@ li.cutscene {
     color: darkslateblue;
 }
 
-li.menu {
+ul#markerlist li.menu {
 /*    background-color:#84CCFF;*/
 /*    background-color: #FFFCB5;*/
 /*    background-color: sunglow;*/
@@ -56,7 +67,7 @@ li.menu {
     color: sienna;
 }
 
-li.walk {
+ul#markerlist li.walk {
 /*    background-color: #6CD5E8;*/
 /*    background-color: #FFCFD6;*/
 /*    background-color: coralred;*/
@@ -64,7 +75,7 @@ li.walk {
     color: firebrick;    
 }
 
-li.battle {
+ul#markerlist li.battle {
 /*    background-color: #77FFEF;*/
 /*    background-color: #91BACC;*/
 /*    background-color: malachite;*/
@@ -72,7 +83,7 @@ li.battle {
     color: darkolivegreen;
 }
 
-li div.iconholder {
+ul#markerlist li div.iconholder {
     float: left;
     width: 70px;
     height: 50px;
@@ -82,11 +93,11 @@ li div.iconholder {
     vertical-align: middle;
 }
 
-li div.textholder {
+ul#markerlist li div.textholder {
     float: left;
 }
 
-li button.remove {
+ul#markerlist li button.remove {
     float: right;
     width: 25px;
     height: 25px;
