@@ -67,6 +67,9 @@
                     <div style="width:100%;text-align:center">
                         <div id="player"></div>
                     </div>
+                    <div style="width:100%;text-align:center">
+                        <canvas id="graph" width="640" height="80"></canvas>
+                    </div>
                 </div>
                 <div class="col-md-1"></div>
                 <div class="col-md-4">
@@ -105,6 +108,7 @@
                         $('#youtube_url').val(url);
                     }
                     duration = player.getDuration();
+                    renderMarkers();
                 }
 
                 function onPlayerStateChange(event) {
@@ -242,6 +246,7 @@
                         markerlist.append(marker);
                     }
                     $('#markerlist').animate({scrollTop: $('#markerlist').prop("scrollHeight")}, 600);
+                    drawGraph();
                 }
                 
                 function updateMarker(index, marker) {
@@ -303,6 +308,61 @@
                         return 1;
                     }
                     return 0;
+                }
+                
+                function getCurrentType(currentTime) {
+                    var type = -1;
+                    for(var i = 0; i < markers.length; i++) {
+                        if (markers[i].time <= currentTime) {
+                            type = markers[i].type;
+                        } else {
+                            break;
+                        }
+                    }
+                    return type;
+                }
+                
+                function drawGraph() {
+                    var canvas = document.getElementById('graph');
+                    var context = canvas.getContext('2d');
+                    var width = canvas.getAttribute('width');
+                    var height = canvas.getAttribute('height');
+                    for(var i = 0; i < width; i++) {
+                        var currentTime = i * (duration / width);
+//                        console.log('currentTime A ' + i);
+//                        console.log('currentTime B ' + duration);
+//                        console.log('currentTime C ' + width);
+                        var currentType = getCurrentType(currentTime);
+                        var r = 0;
+                        var g = 0;
+                        var b = 0;
+                        switch (currentType) {
+                            case 1:
+                                r = 44;
+                                g = 68;
+                                b = 255;
+                                break;
+                            case 2:
+                                r = 255;
+                                g = 194;
+                                b = 44;
+                                break;
+                            case 3:
+                                r = 255;
+                                g = 37;
+                                b = 48;
+                                break;
+                            case 4:
+                                r = 14;
+                                g = 178;
+                                b = 47;
+                                break;
+                       }
+                        context.beginPath();
+                        context.rect(i, 0, i + 1, height);
+                        context.fillStyle = 'rgb(' + r + ', ' + g + ', ' + b + ')';
+                        context.fill();
+                    }
                 }
                 
                 function storageWrite()
