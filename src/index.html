@@ -24,6 +24,38 @@
                     <span class="glyphicon glyphicon-download-alt" aria-hidden="true"></span>
                 </button>
             </a>
+            <h3 id="chapterDisplay"></h3>
+        </div>
+        <div id="editor" class="modal fade" tabindex="-1" role="dialog">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title">Edit Marker</h4>
+                    </div>
+                    <div class="modal-body">
+                        <form>
+                            <div class="form-group">
+                                <label for="typeInput">Type</label>
+                                <select class="form-control" id="typeInput">
+                                    <option value="1">1 - Cutscene</option>
+                                    <option value="2">2 - Menu</option>
+                                    <option value="3">3 - Walk</option>
+                                    <option value="4">4 - Battle</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="chapterInput">Chapter</label>
+                                <input type="number" class="form-control" id="chapterInput" >
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary" data-dismiss="modal" onclick="saveMarker()">Save</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    </div>
+                </div>
+            </div>
         </div>
         <div id="playlist" class="modal fade" tabindex="-1" role="dialog">
             <div class="modal-dialog" role="document">
@@ -82,6 +114,7 @@
                 var chapter = 1;
                 var duration;
                 var prefix = '';
+                var editIndex;
                 
                 var CATEGORY_1 = "Cutscene";
                 var CATEGORY_2 = "Menu";
@@ -155,6 +188,24 @@
                     return (match&&match[7].length==11)? match[7] : false;
                 }
                 
+                function editMarker(index) {
+                    editIndex = index;
+                    $('#editor').modal('show');
+                    $('#chapterInput').val(markers[editIndex].chapter);
+                    $('#typeInput').val(markers[editIndex].type);
+                }
+                
+                function saveMarker() {
+                    var marker = markers[editIndex];
+                    marker.type = parseInt($('#typeInput').val());
+                    marker.chapter = $('#chapterInput').val();
+                    updateMarker(editIndex, marker);
+                }
+                
+                function updateChapterDisplay() {
+                    $('#chapterDisplay').text('Chapter ' + chapter);
+                }
+                
                 $('#youtube_btn').on('click', function (e) {
                     var videoId = youtube_parser($('#youtube_url').val());
                     
@@ -185,9 +236,20 @@
                 
                 $(function () {
                     $('[data-toggle="tooltip"]').tooltip();
+                    updateChapterDisplay();
                 });
                 
                 $(document).keypress(function(e) {
+                    if(e.which == 43 || e.which == 93) {
+                        chapter++;
+                        updateChapterDisplay();
+                    }
+                    if(e.which == 45 || e.which == 91) {
+                        if(chapter > 1) {
+                            chapter--;
+                            updateChapterDisplay();
+                        }
+                    }
                     if (playerState == 1) {
                         if(e.which == 49 || e.which == 97) {
                             addMarker(1, Math.floor(player.getCurrentTime()));
@@ -200,14 +262,6 @@
                         }
                         if(e.which == 52 || e.which == 102) {
                             addMarker(4, Math.floor(player.getCurrentTime()));
-                        }
-                        if(e.which == 43 || e.which == 93) {
-                            chapter++;
-                        }
-                        if(e.which == 45 || e.which == 91) {
-                            if(chapter > 1) {
-                                chapter--;
-                            }
                         }
                         if(e.which == 32) {
                             pauseVideo();

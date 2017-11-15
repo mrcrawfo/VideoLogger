@@ -29,6 +29,12 @@ div.footer button {
     margin: 20px;
 }
 
+div.footer h3 {
+    float: left;
+    vertical-align: middle;
+    line-height: 2em;
+}
+
 div.footer button span {
     margin-top: 2px;
     font-size: 2em;
@@ -95,6 +101,10 @@ ul#markerlist li div.iconholder {
 
 ul#markerlist li div.textholder {
     float: left;
+}
+
+ul#markerlist li div.textholder p, ul#markerlist li div.textholder strong {
+    user-select: none;
 }
 
 ul#markerlist li button.remove {
