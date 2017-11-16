@@ -101,6 +101,7 @@
                     </div>
                     <div style="width:100%;text-align:center">
                         <canvas id="graph" width="640" height="80"></canvas>
+                        <h3 id="playbackRate">Playback Rate: 1x</h3>
                     </div>
                 </div>
                 <div class="col-md-1"></div>
@@ -140,14 +141,16 @@
                     if($('#youtube_url').val() != url) {
                         $('#youtube_url').val(url);
                     }
-                    duration = player.getDuration();
                     renderMarkers();
                 }
 
                 function onPlayerStateChange(event) {
+                    var previousState = playerState;
                     playerState = event.data;
                     if (event.data == YT.PlayerState.PLAYING) {
-                        
+                        if(previousState == YT.PlayerState.UNSTARTED || previousState == YT.PlayerState.BUFFERING) {
+                            renderMarkers();
+                        }
                     }
                 }
                 
@@ -239,32 +242,74 @@
                     updateChapterDisplay();
                 });
                 
-                $(document).keypress(function(e) {
-                    if(e.which == 43 || e.which == 93) {
+                $(document).keydown(function(e) {
+                    if(e.which == 187 || e.which == 221) {
                         chapter++;
                         updateChapterDisplay();
                     }
-                    if(e.which == 45 || e.which == 91) {
+                    if(e.which == 189 || e.which == 219) {
                         if(chapter > 1) {
                             chapter--;
                             updateChapterDisplay();
                         }
                     }
                     if (playerState == 1) {
-                        if(e.which == 49 || e.which == 97) {
+                        if(e.which == 49 || e.which == 65) {
                             addMarker(1, Math.floor(player.getCurrentTime()));
                         }
-                        if(e.which == 50 || e.which == 115) {
+                        if(e.which == 50 || e.which == 83) {
                             addMarker(2, Math.floor(player.getCurrentTime()));
                         }
-                        if(e.which == 51 || e.which == 100) {
+                        if(e.which == 51 || e.which == 68) {
                             addMarker(3, Math.floor(player.getCurrentTime()));
                         }
-                        if(e.which == 52 || e.which == 102) {
+                        if(e.which == 52 || e.which == 70) {
                             addMarker(4, Math.floor(player.getCurrentTime()));
                         }
                         if(e.which == 32) {
                             pauseVideo();
+                        }
+                        // left arrow
+                        if(e.which == 37 || e.which == 188) {
+                            var position = player.getCurrentTime();
+                            player.seekTo(position - 5);
+                        }
+                        // right arrow
+                        if(e.which == 39 || e.which == 190) {
+                            var position = player.getCurrentTime();
+                            player.seekTo(position + 5);
+                        }
+                        // up arrow
+                        if(e.which == 38) {
+                            var playrate = player.getPlaybackRate();
+                            var rates = player.getAvailablePlaybackRates();
+                            var index = -1;
+                            for(var i = 0; i < rates.length; i++) {
+                                if(rates[i] == playrate) {
+                                    index = i;
+                                    break;
+                                }
+                            }
+                            if(index >= 0 && rates.length > index + 1) {
+                                player.setPlaybackRate(rates[index + 1]);
+                                $('#playbackRate').text('Playback Rate: ' + rates[index + 1] + 'x');
+                            }
+                        }
+                        // down arrow
+                        if(e.which == 40) {
+                            var playrate = player.getPlaybackRate();
+                            var rates = player.getAvailablePlaybackRates();
+                            var index = -1;
+                            for(var i = 0; i < rates.length; i++) {
+                                if(rates[i] == playrate) {
+                                    index = i;
+                                    break;
+                                }
+                            }
+                            if(index > 0) {
+                                player.setPlaybackRate(rates[index - 1]);
+                                $('#playbackRate').text('Playback Rate: ' + rates[index - 1] + 'x');
+                            }
                         }
                     } else {
                         if(e.which == 32) {
@@ -292,6 +337,9 @@
                 }
                 
                 function renderMarkers() {
+                    if (player) {
+                        duration = player.getDuration();
+                    }
                     var markerlist = $('#markerlist');
                     markerlist.empty();
                     for(var i = 0; i < markers.length; i++) {
@@ -339,7 +387,7 @@
                 
                 function getTimecode(seconds) {
                     var h = Math.floor(seconds / 3600);
-                    var m = Math.floor(seconds / 60);
+                    var m = Math.floor((seconds % 3600) / 60);
                     var s = seconds % 60;
                     return zerofill(h, 2) + ':' + zerofill(m, 2) + ':' + zerofill(s, 2);
                 }
@@ -383,9 +431,6 @@
                     var height = canvas.getAttribute('height');
                     for(var i = 0; i < width; i++) {
                         var currentTime = i * (duration / width);
-//                        console.log('currentTime A ' + i);
-//                        console.log('currentTime B ' + duration);
-//                        console.log('currentTime C ' + width);
                         var currentType = getCurrentType(currentTime);
                         var r = 0;
                         var g = 0;
