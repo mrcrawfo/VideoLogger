@@ -354,14 +354,14 @@
                 function updateMarker(index, marker) {
                     //$('#markerlist li').eq(index).remove();
                     markers[index] = marker;
-                    storageWrite();
                     renderMarkers();
+                    storageWrite();
                 }
                 
                 function removeMarker(index) {
                     markers.splice(index, 1);
-                    storageWrite();
                     renderMarkers();
+                    storageWrite();
                 }
                 
                 function addMarker(markerType, markerTime) {
@@ -511,6 +511,7 @@
                     for(var i = 0; i < markers.length; i++) {
                         markersArray.push([markers[i].index, markers[i].type, markers[i].time, markers[i].timecode, markers[i].chapter]);
                     }
+                    markersArray.push([markers.length + 1, 0, Math.floor(duration), getTimecode(Math.floor(duration)), 0]);
                     var csv = "data:text/csv;charset=utf-8,";
                     markersArray.forEach(function(rowArray){
                         let row = rowArray.join(",");
