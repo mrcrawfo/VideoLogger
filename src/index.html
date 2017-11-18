@@ -42,6 +42,7 @@
                                     <option value="2">2 - Menu</option>
                                     <option value="3">3 - Walk</option>
                                     <option value="4">4 - Battle</option>
+                                    <option value="5">5 - Minigame</option>
                                 </select>
                             </div>
                             <div class="form-group">
@@ -121,6 +122,7 @@
                 var CATEGORY_2 = "Menu";
                 var CATEGORY_3 = "Walk";
                 var CATEGORY_4 = "Battle";
+                var CATEGORY_5 = "Minigame";
                 
                 // https://developers.google.com/youtube/iframe_api_reference
                 
@@ -266,6 +268,9 @@
                         if(e.which == 52 || e.which == 70) {
                             addMarker(4, Math.floor(player.getCurrentTime()));
                         }
+                        if(e.which == 53 || e.which == 71) {
+                            addMarker(5, Math.floor(player.getCurrentTime()));
+                        }
                         if(e.which == 32) {
                             pauseVideo();
                         }
@@ -331,6 +336,9 @@
                             break;
                         case 4:
                             output = CATEGORY_4;
+                            break;
+                        case 5:
+                            output = CATEGORY_5;
                             break;
                     }
                     return output;
@@ -455,6 +463,11 @@
                                 r = 14;
                                 g = 178;
                                 b = 47;
+                                break;
+                            case 5:
+                                r = 186;
+                                g = 85;
+                                b = 211;
                                 break;
                        }
                         context.beginPath();

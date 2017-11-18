@@ -58,35 +58,33 @@ ul#markerlist li {
 }
 
 ul#markerlist li.cutscene {
-/*    background-color:#6C94E8;*/
-/*    background-color: #B28C92;*/
 /*    background-color: dodgerblue;*/
     background-color: #2C68FF;
     color: darkslateblue;
 }
 
 ul#markerlist li.menu {
-/*    background-color:#84CCFF;*/
-/*    background-color: #FFFCB5;*/
 /*    background-color: sunglow;*/
     background-color: #FFC22C;
     color: sienna;
 }
 
 ul#markerlist li.walk {
-/*    background-color: #6CD5E8;*/
-/*    background-color: #FFCFD6;*/
 /*    background-color: coralred;*/
     background-color: #FF3748;
     color: firebrick;    
 }
 
 ul#markerlist li.battle {
-/*    background-color: #77FFEF;*/
-/*    background-color: #91BACC;*/
 /*    background-color: malachite;*/
     background-color: #0EB22F;
     color: darkolivegreen;
+}
+
+ul#markerlist li.minigame {
+/*    background-color: malachite;*/
+    background-color: mediumorchid;
+    color: rebeccapurple;
 }
 
 ul#markerlist li div.iconholder {
