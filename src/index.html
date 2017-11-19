@@ -101,7 +101,7 @@
                         <div id="player"></div>
                     </div>
                     <div style="width:100%;text-align:center">
-                        <canvas id="graph" width="640" height="80"></canvas>
+                        <canvas id="graph" width="640" height="80" onclick="scrubGraph(event)"></canvas>
                         <h3 id="playbackRate">Playback Rate: 1x</h3>
                     </div>
                 </div>
@@ -168,6 +168,13 @@
                     id = videoId;
                     prefix = filename;
                     markers = storageRead();
+                    chapter = 1;
+                    if(markers.length > 0) {
+                        if(markers[markers.length - 1].chapter > 0) {
+                            chapter = markers[markers.length - 1].chapter;
+                        }
+                    }
+                    updateChapterDisplay();
                     exportCSV();
                     renderMarkers();
                     
@@ -477,8 +484,12 @@
                     }
                 }
                 
-                function storageWrite()
-                {
+                function scrubGraph(event) {
+                    var scrubTime = Math.floor((event.offsetX / event.target.width) * duration);
+                    player.seekTo(scrubTime);
+                }
+                
+                function storageWrite() {
                     var success = false;
                     
                     try
