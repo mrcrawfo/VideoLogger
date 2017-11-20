@@ -143,7 +143,7 @@
                     if($('#youtube_url').val() != url) {
                         $('#youtube_url').val(url);
                     }
-                    renderMarkers();
+                    renderMarkers(true);
                 }
 
                 function onPlayerStateChange(event) {
@@ -151,7 +151,7 @@
                     playerState = event.data;
                     if (event.data == YT.PlayerState.PLAYING) {
                         if(previousState == YT.PlayerState.UNSTARTED || previousState == YT.PlayerState.BUFFERING) {
-                            renderMarkers();
+                            renderMarkers(true);
                         }
                     }
                 }
@@ -176,7 +176,7 @@
                     }
                     updateChapterDisplay();
                     exportCSV();
-                    renderMarkers();
+                    renderMarkers(true);
                     
                     if (player) {
                         player.loadVideoById(videoId, 0, 'medium');
@@ -351,7 +351,7 @@
                     return output;
                 }
                 
-                function renderMarkers() {
+                function renderMarkers(scroll) {
                     if (player) {
                         duration = player.getDuration();
                     }
@@ -362,20 +362,22 @@
                         var marker = new EJS({url:'templates/marker.ejs'}).render(markers[i]);
                         markerlist.append(marker);
                     }
-                    $('#markerlist').animate({scrollTop: $('#markerlist').prop("scrollHeight")}, 600);
+                    if (scroll) {
+                        $('#markerlist').animate({scrollTop: $('#markerlist').prop("scrollHeight")}, 600);
+                    }
                     drawGraph();
                 }
                 
                 function updateMarker(index, marker) {
                     //$('#markerlist li').eq(index).remove();
                     markers[index] = marker;
-                    renderMarkers();
+                    renderMarkers(false);
                     storageWrite();
                 }
                 
                 function removeMarker(index) {
                     markers.splice(index, 1);
-                    renderMarkers();
+                    renderMarkers(false);
                     storageWrite();
                 }
                 
@@ -393,7 +395,7 @@
                         markers.push(marker);
                         markers.sort(timestampAscending);
                         storageWrite();
-                        renderMarkers();
+                        renderMarkers(true);
                     } else {
                         markers[replaceIndex] = marker;
                         updateMarker(replaceIndex, marker);
@@ -526,7 +528,7 @@
                         var storageString = JSON.stringify([]);
                         window.localStorage.setItem(id, storageString);
                         markers = [];
-                        renderMarkers();
+                        renderMarkers(true);
                     } catch(e) {}
                 }
                 
