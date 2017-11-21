@@ -152,6 +152,8 @@
                     if (event.data == YT.PlayerState.PLAYING) {
                         if(previousState == YT.PlayerState.UNSTARTED || previousState == YT.PlayerState.BUFFERING) {
                             renderMarkers(true);
+                            storageWrite();
+                            exportCSV();
                         }
                     }
                 }
@@ -175,8 +177,8 @@
                         }
                     }
                     updateChapterDisplay();
-                    exportCSV();
                     renderMarkers(true);
+                    exportCSV();
                     
                     if (player) {
                         player.loadVideoById(videoId, 0, 'medium');
@@ -537,7 +539,11 @@
                     for(var i = 0; i < markers.length; i++) {
                         markersArray.push([markers[i].index, markers[i].type, markers[i].time, markers[i].timecode, markers[i].chapter]);
                     }
-                    markersArray.push([markers.length, 0, Math.floor(duration), getTimecode(Math.floor(duration)), markers[markers.length - 1].chapter]);
+                    if(markersArray.length > 1 && markers.length > 0) {
+                        markersArray.push([markers.length, 0, Math.floor(duration), getTimecode(Math.floor(duration)), markers[markers.length - 1].chapter]);
+                    } else {
+                        markersArray.push([markers.length, 0, Math.floor(duration), getTimecode(Math.floor(duration)), 1]);
+                    }
                     var csv = "data:text/csv;charset=utf-8,";
                     markersArray.forEach(function(rowArray){
                         let row = rowArray.join(",");
