@@ -149,7 +149,7 @@
                     playerState = event.data;
                     if (event.data == YT.PlayerState.PLAYING) {
                         if(previousState == YT.PlayerState.UNSTARTED || previousState == YT.PlayerState.BUFFERING) {
-                            renderMarkers(true);
+                            renderMarkers(false);
                             storageWrite();
                             exportCSV();
                         }
